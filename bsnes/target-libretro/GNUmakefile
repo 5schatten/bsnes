@@ -1,6 +1,6 @@
 name := bsnes_libretro
 local := false
-openmp := true
+openmp := false
 flags += -Wno-narrowing -Wno-multichar -g -fPIC
 
 objects := libretro $(objects)
@@ -10,7 +10,7 @@ obj/libretro.o: target-libretro/libretro.cpp
 
 all: $(objects)
 ifeq ($(platform),linux)
-	$(strip $(compiler) -o out/$(name).so -shared $(objects) -Wl,--no-undefined -Wl,--version-script=target-libretro/link.T -Wl,-Bdynamic -lpthread -ldl -lgomp)
+	$(strip $(compiler) -o out/$(name).so -shared $(objects) -Wl,--no-undefined -Wl,--version-script=target-libretro/link.T -Wl,-Bdynamic -lpthread -ldl)
 else ifeq ($(platform),windows)
 	$(strip $(compiler) -o out/$(name).dll -shared $(objects) -Wl,--no-undefined -Wl,--version-script=target-libretro/link.T -static-libgcc -static-libstdc++ -Wl,-Bstatic -lws2_32 -lpthread -lgomp -Wl,-Bdynamic)
 else ifeq ($(platform),macos)
